@@ -15,8 +15,8 @@ int main()
         for ( auto x : {1, 2, 3} )
         {
             aq.send( x );
-            std::cout << "s" << x << " ";
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            std::cout << "s" << std::flush;
+            std::this_thread::sleep_for(std::chrono::milliseconds(30));
         }
     };
 
@@ -24,8 +24,8 @@ int main()
     {
         for ( auto x : {1, 2, 3} )
         {
-            std::cout << "r" << aq.receive() << " ";
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            std::cout << aq.receive() << std::flush;
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
     };
 
