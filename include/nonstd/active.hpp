@@ -59,7 +59,7 @@ public:
 
         if ( m_queue.empty() )
         {
-            m_item_available.wait( lock );
+            m_item_available.wait( lock, [this]{ return !this->m_queue.empty(); } );
         }
 
         T item{ m_queue.front() };
