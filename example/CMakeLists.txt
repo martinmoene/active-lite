@@ -19,6 +19,27 @@ message( STATUS "Subproject '${PROJECT_NAME}', examples '${PROGRAM}-*'")
 
 set( OPTIONS "" )
 
+# Sources (.cpp), normal and no-exception, and their base names:
+
+set( SOURCES
+    main-count.cpp
+    main-queue.cpp
+)
+
+set( SOURCES_NE
+)
+
+string( REPLACE ".cpp" "" BASENAMES    "${SOURCES}" )
+string( REPLACE ".cpp" "" BASENAMES_NE "${SOURCES_NE}" )
+
+macro( ternary var boolean value1 value2 )
+    if( ${boolean} )
+        set( ${var} ${value1} )
+    else()
+        set( ${var} ${value2} )
+    endif()
+endmacro()
+
 if( MSVC )
     message( STATUS "Matched: MSVC")
 
@@ -42,18 +63,25 @@ else()
 endif()
 
 function( make_target name no_exceptions )
-    add_executable             ( ${PROGRAM}-${name} ${name}.cpp )
-    target_include_directories ( ${PROGRAM}-${name} PRIVATE ../../variant-lite/include )
-    target_link_libraries      ( ${PROGRAM}-${name} PRIVATE ${PACKAGE} )
+    ternary( ne no_exceptions "-ne" "" )
+
+    add_executable             ( ${PROGRAM}-${name}${ne} ${name}.cpp )
+    target_include_directories ( ${PROGRAM}-${name}${ne} PRIVATE ../../variant-lite/include )
+    target_link_libraries      ( ${PROGRAM}-${name}${ne} PRIVATE ${PACKAGE} )
     if ( no_exceptions )
-        target_compile_options ( ${PROGRAM}-${name} PRIVATE ${NO_EXCEPTIONS_OPTIONS} )
+        target_compile_options ( ${PROGRAM}-${name}${ne} PRIVATE ${NO_EXCEPTIONS_OPTIONS} )
     else()
-        target_compile_options ( ${PROGRAM}-${name} PRIVATE ${EXCEPTIONS_OPTIONS} )
+        target_compile_options ( ${PROGRAM}-${name}${ne} PRIVATE ${EXCEPTIONS_OPTIONS} )
     endif()
 
 endfunction()
 
-make_target( main-count FALSE )
-make_target( main-queue FALSE )
+foreach( target ${BASENAMES} )
+    make_target( ${target} FALSE )
+endforeach()
+
+foreach( target ${BASENAMES_NE} )
+    make_target( ${target} TRUE )
+endforeach()
 
 # end of file
