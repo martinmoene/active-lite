@@ -40,6 +40,8 @@ macro( ternary var boolean value1 value2 )
     endif()
 endmacro()
 
+# Determine options:
+
 if( MSVC )
     message( STATUS "Matched: MSVC")
 
@@ -62,6 +64,8 @@ else()
     message( STATUS "Matched: nothing")
 endif()
 
+# Function to create a target:
+
 function( make_target name no_exceptions )
     ternary( ne no_exceptions "-ne" "" )
 
@@ -75,6 +79,8 @@ function( make_target name no_exceptions )
     endif()
 
 endfunction()
+
+# Targets:
 
 foreach( target ${BASENAMES} )
     make_target( ${target} FALSE )
