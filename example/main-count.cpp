@@ -57,6 +57,7 @@ int main()
 
 // cl -EHsc -I../include main-count.cpp && main-count.exe
 // clang-cl -Wall -Wextra -Wno-c++98-compat -EHsc -I../include main-count.cpp && main-count.exe
+// g++ -Wall -Wextra -Wno-c++98-compat -I../include main-count.cpp -o main-count.exe && main-count.exe
 
 // Output:
 //
