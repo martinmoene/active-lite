@@ -95,5 +95,5 @@ Counter: 9
 
 | Type             | Notes                                  |
 | ---------------- | -------------------------------------- |
-| class **queue**  | Thread-save queue                      |
+| class **queue**  | Thread-safe queue                      |
 | class **helper** | Helper class for Active Object pattern |
